@@ -1,14 +1,13 @@
 
 class Path:
 
-    def __init__(self, type, change):
+    def __init__(self, movetype, change):
 
-        self.__MOVE_TYPES = ['single_swap', 'single_change']
+        self._MOVETYPES = ['single_swap', 'single_change']
+        self.change = change
 
-        if type in self.__MOVE_TYPES:
-            self.type = type
+        if movetype in self._MOVETYPES:
+            self.movetype = movetype
 
         else:
-            raise ValueError('Only types accepted are %s.' % (', '.join(MOVE_TYPES)))
-
-        self.change = change
+            raise ValueError('Only types accepted are %s.' % (', '.join(self._MOVETYPES)))
