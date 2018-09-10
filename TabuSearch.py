@@ -32,7 +32,7 @@ class TabuSearch:
             neighbourhood_best = self._best_score(neighbourhood)
 
             while True:
-                if neighbourhood_best in self.tabu_list:
+                if self.tabu_list.is_move_tabu(neighbourhood_best):
                     if self._score(neighbourhood_best) > self._score(self.best):
                         self.tabu_list.append_tabu_list(neighborhood_best)
                         self.best = neighbourhood_best
