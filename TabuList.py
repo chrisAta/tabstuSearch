@@ -16,7 +16,7 @@ class TabuList:
         self._max_tenure = max_tenure
 
     def is_move_tabu(self, move):
-        return move.path in self.tabu_list
+        return move.path.change in self.tabu_list
 
     def append_tabu_list(self, path):
 
@@ -25,14 +25,12 @@ class TabuList:
         print self.list_type
 
         if self.list_type == 'single':
-            print path.change
             if not isinstance(path.change, list):
                 raise ValueError('Tabu List Type is SINGLE - Path should be a list with a single element')
 
             if len(path.change) != 1:
                 raise ValueError('Tabu List Type is SINGLE - Path should be a list with a single element')
 
-            print 'Appending'
             self.tabu_list.append(TabuTenure(path.change, self._max_tenure, 0))
 
         elif self.list_type == 'double':
