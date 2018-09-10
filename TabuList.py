@@ -23,7 +23,7 @@ class TabuList:
         # if not isinstance(path, Path):
 
         print self.list_type
-        
+
         if self.list_type == 'single':
             print path.change
             if not isinstance(path.change, list):
@@ -52,3 +52,8 @@ class TabuList:
                 raise ValueError('Tabu List Type is TUPLE - Path should be a tuple with two elements')
 
             self.tabu_list.append(TabuTenure(path.change, self._max_tenure, 0))
+
+
+    def increment_tabu_tenure(self):
+        for i in range(0, len(self.tabu_list)):
+            self.tabu_list[i].curr_tenure += 1
