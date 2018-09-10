@@ -36,6 +36,7 @@ class TabuSearch:
                     if self._score(neighbourhood_best) > self._score(self.best):
                         self.tabu_list.append_tabu_list(neighborhood_best)
                         self.best = neighbourhood_best
+                        self.curr_sol = neighborhood_best #??
                         break
 
                     else:
@@ -45,11 +46,12 @@ class TabuSearch:
                 else:
                     self.tabu_list.append_tabu_list(neighbourhood_best)
                     self.curr_sol = neighbourhood_best
-
                     if self._score(self.current) > self._score(self.best):
                         self.best = self.current
 
                     break
+
+            self.tabu_list.increment_tabu_tenure
 
         print 'RECHED MAX STEPS'
         return self.best, self._score(self.best)
