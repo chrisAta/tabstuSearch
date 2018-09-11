@@ -6,11 +6,12 @@ from copy import deepcopy
 
 class TabuSearch:
 
-    def __init__(self, initial_solution, max_len, list_type, max_tenure, max_steps):
+    def __init__(self, initial_solution, max_len, list_type, max_tenure, max_steps, max_score='*'):
         self.curr_sol = initial_solution
         self.tabu_list = TabuList(max_len, list_type, max_tenure)
         self.max_steps = max_steps
         self.best = ''
+        self.max_score = max_score
         self.evaluate_curr_sol()
         # self.move_manager = MoveManager()
 
@@ -61,6 +62,12 @@ class TabuSearch:
                     break
 
             self.tabu_list.increment_tabu_tenure()
+
+            if self.max_score != '*' and self._score(self.best) >= self.max_score:
+                print 'REACHED MAX SCORE AFTER ' + str(i) + ' ITERATIONS'
+                return self.best, self._score(self.best)
+
+            # print self._score(self.curr_sol)
 
         print 'REACHED MAX STEPS'
         return self.best, self._score(self.best)

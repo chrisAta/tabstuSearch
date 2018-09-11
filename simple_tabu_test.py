@@ -13,9 +13,9 @@ class SimpleTest(TabuSearch):
         curr_sol = self.curr_sol
         neighbourhood = []
 
-        for i in range(0, 10):
+        for i in range(0, 30):
             neighbour = deepcopy(curr_sol)
-            rand_num = randint(0, 4)
+            rand_num = randint(0, 94)
             temp_val = list(neighbour.val)
             temp_val[rand_num] = choice(ascii_lowercase)
             neighbour.val = ''.join(temp_val)
@@ -27,13 +27,13 @@ class SimpleTest(TabuSearch):
         return neighbourhood
 
     def _score(self, sol):
-        return float(sum(sol.val[i] == "clout"[i] for i in range(5)))
+        return float(sum(sol.val[i] == "thetroutisbeautifulthetroutisbeautifulthetroutisbeautifulthetroutisbeautifulthetroutisbeautiful"[i] for i in range(95)))
 
 
 def main():
 
-    ini_sol = Solution('abcde')
-    test = SimpleTest(ini_sol, 7, 'single', 1, 500)
+    ini_sol = Solution('abcdeabcdeabcdeabcdabcdeabcdeabcdeabcdabcdeabcdeabcdeabcdabcdeabcdeabcdeabcdabcdeabcdeabcdeabcd')
+    test = SimpleTest(ini_sol, 50, 'single', 20, 50000, 95.0)
 
     best, score = test.run()
 
