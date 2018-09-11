@@ -19,30 +19,34 @@ class SimpleTest(TabuSearch):
             temp_val = list(neighbour.val)
             temp_val[rand_num] = choice(ascii_lowercase)
             neighbour.val = ''.join(temp_val)
-            neighbour.fitness = self._score(neighbour.val)
+            neighbour.fitness = self._score(neighbour)
             path = Path('single_change', [rand_num])
             move = Move(curr_sol, neighbour, path)
             neighbourhood.append(move)
 
         return neighbourhood
 
-    def _score(self, val):
-        return float(sum(val[i] == "clout"[i] for i in range(5)))
+    def _score(self, sol):
+        return float(sum(sol.val[i] == "clout"[i] for i in range(5)))
 
 
 def main():
 
     ini_sol = Solution('abcde')
-    test = SimpleTest(ini_sol, 7, 'single', 10, 500)
+    test = SimpleTest(ini_sol, 7, 'single', 10, 5)
 
-    test.evaluate_curr_sol()
+    # test.evaluate_curr_sol()
+    #
+    # neigh = test._create_neighbourhood()
+    #
+    # for element in neigh:
+    #     print element.new_sol.val
+    #     print element.new_sol.fitness
 
-    neigh = test._create_neighbourhood()
+    best, score = test.run()
 
-    for element in neigh:
-        print element.new_sol.val
-        print element.new_sol.fitness
-
+    print best.val
+    print score
 
 if __name__ == "__main__":
     main()

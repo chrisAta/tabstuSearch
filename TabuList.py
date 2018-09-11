@@ -22,8 +22,6 @@ class TabuList:
 
         # if not isinstance(path, Path):
 
-        print self.list_type
-
         if self.list_type == 'single':
             if not isinstance(path.change, list):
                 raise ValueError('Tabu List Type is SINGLE - Path should be a list with a single element')
