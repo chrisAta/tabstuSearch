@@ -13,7 +13,9 @@ class SimpleTest(TabuSearch):
         curr_sol = self.curr_sol
         neighbourhood = []
 
-        for i in range(0, 30):
+        # delta = self._optional_var[0]
+
+        for i in range(0, 50):
             neighbour = deepcopy(curr_sol)
             rand_num = randint(0, 94)
             temp_val = list(neighbour.val)
@@ -32,8 +34,12 @@ class SimpleTest(TabuSearch):
 
 def main():
 
+    # ini_delta = bla
+    # distance_matrix = numpybla
+    # opt_tuple = (distance_matrix, ini_delta)
+    # test = SimpleTest(ini_sol, 7, 'single', 100, 5000, 95, opt_tuple)
     ini_sol = Solution('abcdeabcdeabcdeabcdabcdeabcdeabcdeabcdabcdeabcdeabcdeabcdabcdeabcdeabcdeabcdabcdeabcdeabcdeabcd')
-    test = SimpleTest(ini_sol, 50, 'single', 20, 50000, 95.0)
+    test = SimpleTest(ini_sol, 7, 'single', 100, 50000, 95.0)
 
     best, score = test.run()
 
