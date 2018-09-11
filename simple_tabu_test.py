@@ -33,15 +33,7 @@ class SimpleTest(TabuSearch):
 def main():
 
     ini_sol = Solution('abcde')
-    test = SimpleTest(ini_sol, 7, 'single', 10, 5)
-
-    # test.evaluate_curr_sol()
-    #
-    # neigh = test._create_neighbourhood()
-    #
-    # for element in neigh:
-    #     print element.new_sol.val
-    #     print element.new_sol.fitness
+    test = SimpleTest(ini_sol, 7, 'single', 1, 500)
 
     best, score = test.run()
 

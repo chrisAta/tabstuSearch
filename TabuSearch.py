@@ -1,6 +1,7 @@
 from TabuList import TabuList
 from abc import abstractmethod
 from numpy import argmax
+from copy import deepcopy
 
 
 class TabuSearch:
@@ -32,15 +33,19 @@ class TabuSearch:
 
     def run(self):
         for i in range(0, self.max_steps):
+
             neighbourhood = self._create_neighbourhood()
             neighbourhood_best = self._best_score(neighbourhood)
+
+            self.tabu_list.remove_expired_tabus()
 
             while True:
                 if self.tabu_list.is_move_tabu(neighbourhood_best):
                     if self._score(neighbourhood_best.new_sol) > self._score(self.best):
-                        self.tabu_list.append_tabu_list(neighborhood_best.path)
-                        self.best = neighbourhood_best.new_sol
-                        self.curr_sol = neighborhood_best.new_sol  # ??
+                        print 'ASPIRATION!'
+                        self.tabu_list.append_tabu_list(neighbourhood_best.path)
+                        self.best = deepcopy(neighbourhood_best.new_sol)
+                        self.curr_sol = deepcopy(neighbourhood_best.new_sol)  # ??
                         break
 
                     else:
@@ -49,13 +54,13 @@ class TabuSearch:
 
                 else:
                     self.tabu_list.append_tabu_list(neighbourhood_best.path)
-                    self.curr_sol = neighbourhood_best.new_sol
+                    self.curr_sol = deepcopy(neighbourhood_best.new_sol)
                     if self.best == '' or self._score(self.curr_sol) > self._score(self.best):
-                        self.best = self.curr_sol
+                        self.best = deepcopy(self.curr_sol)
 
                     break
 
-            self.tabu_list.increment_tabu_tenure
+            self.tabu_list.increment_tabu_tenure()
 
         print 'REACHED MAX STEPS'
         return self.best, self._score(self.best)
