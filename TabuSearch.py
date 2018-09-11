@@ -1,6 +1,7 @@
 from TabuList import TabuList
 from abc import abstractmethod
 
+
 class TabuSearch:
 
     def __init__(self, initial_solution, max_len, list_type, max_tenure, max_steps):
@@ -10,7 +11,6 @@ class TabuSearch:
         self.best = ''
         # self.move_manager = MoveManager()
 
-
     @abstractmethod
     def _create_neighbourhood(self):
         """
@@ -19,12 +19,15 @@ class TabuSearch:
         pass
 
     @abstractmethod
-    def _score(self):
+    def _score(self, val):
         pass
+
+    def evaluate_curr_sol(self):
+
+        self.curr_sol.fitness = self._score(self.curr_sol.val)
 
     def _best_score(self, neighbourhood):
         return neighbourhood[argmax([self._score(x) for x in neighbourhood])]
-
 
     def run(self):
         for i in range(0, self.max_steps):
@@ -36,7 +39,7 @@ class TabuSearch:
                     if self._score(neighbourhood_best) > self._score(self.best):
                         self.tabu_list.append_tabu_list(neighborhood_best)
                         self.best = neighbourhood_best
-                        self.curr_sol = neighborhood_best #??
+                        self.curr_sol = neighborhood_best  # ??
                         break
 
                     else:
