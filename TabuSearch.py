@@ -6,14 +6,14 @@ from copy import deepcopy
 
 class TabuSearch:
 
-    def __init__(self, initial_solution, max_len, list_type, max_tenure, max_steps, max_score='*'): #opt_tuple
+    def __init__(self, initial_solution, max_len, list_type, max_tenure, max_steps, max_score='*', opt_tuple=()):
         self.curr_sol = initial_solution
         self.tabu_list = TabuList(max_len, list_type, max_tenure)
         self.max_steps = max_steps
         self.best = ''
         self.max_score = max_score
+        self.opt_tuple = opt_tuple
         self.evaluate_curr_sol()
-        # self._opt_tuple = opt_tuple
 
     @abstractmethod
     def _create_neighbourhood(self):
@@ -61,12 +61,15 @@ class TabuSearch:
     def run(self):
         for i in range(0, self.max_steps):
 
+            # print i
+
             neighbourhood = self._create_neighbourhood()
             neighbourhood_best = self._best_score(neighbourhood)
 
             self.tabu_list.remove_expired_tabus()
 
             while True:
+
                 if self.tabu_list.is_move_tabu(neighbourhood_best):
                     print 'TABU'
                     if self._score(neighbourhood_best.new_sol) >= self._score(self.best):
@@ -74,6 +77,7 @@ class TabuSearch:
                         self.tabu_list.append_tabu_list(neighbourhood_best.path)
                         self.best = deepcopy(neighbourhood_best.new_sol)
                         self.curr_sol = deepcopy(neighbourhood_best.new_sol)  # ??
+                        print self.best.fitness
                         break
 
                     else:
@@ -85,10 +89,14 @@ class TabuSearch:
                     self.curr_sol = deepcopy(neighbourhood_best.new_sol)
                     if self.best == '' or self._score(self.curr_sol) >= self._score(self.best):
                         self.best = deepcopy(self.curr_sol)
+                        print 'NEW BEST'
+                        print self.best.fitness
 
                     break
 
             self.tabu_list.increment_tabu_tenure()
+
+            # print self.curr_sol.fitness
 
             # call abstract post_swap_change method in case necessary for algo (like eq5 for memetic algo paper)
             # _post_swap_change(neighbourhood_best)

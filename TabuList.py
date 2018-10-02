@@ -17,11 +17,29 @@ class TabuList:
         self._max_tenure = max_tenure
 
     def is_move_tabu(self, move):
-        return move.path.change in self.element_list
+
+        if len(self.element_list) == 0:
+            return False
+
+        if self.list_type in ('single'):
+            return move.path.change[0] in self.element_list
+
+        if self.list_type == 'double':
+            # temp = [x for sub in self.element_list for x in sub]
+            # print temp
+            # print move.path.change
+            # print self.element_list
+            return True in [x in self.element_list for x in move.path.change]
+
+        if self.list_type in ('tuple'):
+            return move.path.change in self.element_list
+
 
     def append_tabu_list(self, path):
 
         # if not isinstance(path, Path):
+
+        # temp = [x for sub in self.element_list for x in sub]
 
         if path.change in self.element_list:
             copy = list(self.tabu_list)
@@ -38,18 +56,27 @@ class TabuList:
             if len(path.change) != 1:
                 raise ValueError('Tabu List Type is SINGLE - Path should be a list with a single element')
 
-            self.tabu_list.append(TabuTenure(path.change, self._max_tenure, 0))
-            self.element_list.append(path.change)
+            self.tabu_list.append(TabuTenure(path.change[0], self._max_tenure, 0))
+            self.element_list.append(path.change[0])
 
         elif self.list_type == 'double':
             if not isinstance(path.change, list):
                 raise ValueError('Tabu List Type is DOUBLE - Path should be a list with two elements')
 
-            if len(path.change != 2):
+            if len(path.change) != 2:
                 raise ValueError('Tabu List Type is DOUBLE - Path should be a list with two elements')
 
-            self.tabu_list.append(TabuTenure(path.change, self._max_tenure, 0))
-            self.element_list.append(path.change)
+
+            # HAVE TO RESET THE TENURE IF IT ALREADY EXISTS AND GETS TABU AGAIN
+            self.tabu_list.append(TabuTenure(path.change[0], self._max_tenure, 0))
+            self.tabu_list.append(TabuTenure(path.change[1], self._max_tenure, 0))
+            self.element_list.append(path.change[0])
+            self.element_list.append(path.change[1])
+
+
+            # if path.change[0] not in self.element_list
+            #
+            # self.element_list.append(path.change)
 
         else:
             if not isinstance(path.change, tuple):
