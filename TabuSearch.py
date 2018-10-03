@@ -6,13 +6,15 @@ from copy import deepcopy
 
 class TabuSearch:
 
-    def __init__(self, initial_solution, max_len, list_type, max_tenure, max_steps, max_score='*', opt_tuple=()):
+    def __init__(self, initial_solution, max_len, list_type, max_tenure, max_steps, max_score='*', max_wait='*', opt_tuple=()):
         self.curr_sol = initial_solution
         self.tabu_list = TabuList(max_len, list_type, max_tenure)
         self.max_steps = max_steps
         self.best = ''
         self.max_score = max_score
         self.opt_tuple = opt_tuple
+        self.max_wait = max_wait
+        self.wait = 0
         self.evaluate_curr_sol()
 
     @abstractmethod
@@ -71,12 +73,15 @@ class TabuSearch:
             while True:
 
                 if self.tabu_list.is_move_tabu(neighbourhood_best):
-                    print 'TABU'
                     if self._score(neighbourhood_best.new_sol) >= self._score(self.best):
                         print 'ASPIRATION!'
                         self.tabu_list.append_tabu_list(neighbourhood_best.path)
                         self.best = deepcopy(neighbourhood_best.new_sol)
                         self.curr_sol = deepcopy(neighbourhood_best.new_sol)  # ??
+
+                        if self.max_wait !='*':
+                            self.wait = 0
+
                         print self.best.fitness
                         break
 
@@ -89,8 +94,16 @@ class TabuSearch:
                     self.curr_sol = deepcopy(neighbourhood_best.new_sol)
                     if self.best == '' or self._score(self.curr_sol) >= self._score(self.best):
                         self.best = deepcopy(self.curr_sol)
+
+                        if self.max_wait !='*':
+                            self.wait = 0
+
                         print 'NEW BEST'
                         print self.best.fitness
+
+                    elif self.max_wait !='*':
+                        self.wait += 1
+
 
                     break
 
@@ -102,6 +115,11 @@ class TabuSearch:
             # _post_swap_change(neighbourhood_best)
             if self.max_score != '*' and self._score(self.best) >= self.max_score:
                 print 'REACHED MAX SCORE AFTER ' + str(i) + ' ITERATIONS'
+                return self.best, self._score(self.best)
+
+
+            if self.max_wait !='*' and self.wait == self.max_wait:
+                print str(self.max_wait) + ' ITERATATIONS WITHOUT IMPROVEMENT, STOPPING'
                 return self.best, self._score(self.best)
 
             # print self._score(self.curr_sol)
