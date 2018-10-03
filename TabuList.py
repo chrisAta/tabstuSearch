@@ -66,12 +66,26 @@ class TabuList:
             if len(path.change) != 2:
                 raise ValueError('Tabu List Type is DOUBLE - Path should be a list with two elements')
 
+            copy = list(self.element_list)
+            bool0 = True
+            bool1 = True
+            for i in range(0, len(copy)):
+                if path.change[0] == copy[i]:
+                    print 'HIHIHIHI'
+                    self.tabu_list[i] = TabuTenure(path.change[0], self._max_tenure, 0)
+                    bool0 = False
+                elif path.change[1] == copy[i]:
+                    print 'HIHIHIHI'
+                    self.tabu_list[i] = TabuTenure(path.change[1], self._max_tenure, 0)
+                    bool1 = False
 
-            # HAVE TO RESET THE TENURE IF IT ALREADY EXISTS AND GETS TABU AGAIN
-            self.tabu_list.append(TabuTenure(path.change[0], self._max_tenure, 0))
-            self.tabu_list.append(TabuTenure(path.change[1], self._max_tenure, 0))
-            self.element_list.append(path.change[0])
-            self.element_list.append(path.change[1])
+            if bool0:
+                self.tabu_list.append(TabuTenure(path.change[0], self._max_tenure, 0))
+                self.element_list.append(path.change[0])
+
+            if bool1:
+                self.tabu_list.append(TabuTenure(path.change[1], self._max_tenure, 0))
+                self.element_list.append(path.change[1])
 
 
             # if path.change[0] not in self.element_list

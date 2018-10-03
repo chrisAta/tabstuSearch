@@ -86,12 +86,15 @@ class TabuSearch:
                         break
 
                     else:
+                        print len(neighbourhood)
                         neighbourhood.remove(neighbourhood_best)
                         neighbourhood_best = self._best_score(neighbourhood)
 
                 else:
                     self.tabu_list.append_tabu_list(neighbourhood_best.path)
                     self.curr_sol = deepcopy(neighbourhood_best.new_sol)
+                    print self.curr_sol.fitness
+                    # print self.tabu_list.element_list
                     if self.best == '' or self._score(self.curr_sol) >= self._score(self.best):
                         self.best = deepcopy(self.curr_sol)
 
