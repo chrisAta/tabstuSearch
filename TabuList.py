@@ -71,11 +71,11 @@ class TabuList:
             bool1 = True
             for i in range(0, len(copy)):
                 if path.change[0] == copy[i]:
-                    print 'HIHIHIHI'
+                    # print 'HIHIHIHI'
                     self.tabu_list[i] = TabuTenure(path.change[0], self._max_tenure, 0)
                     bool0 = False
                 elif path.change[1] == copy[i]:
-                    print 'HIHIHIHI'
+                    # print 'HIHIHIHI'
                     self.tabu_list[i] = TabuTenure(path.change[1], self._max_tenure, 0)
                     bool1 = False
 

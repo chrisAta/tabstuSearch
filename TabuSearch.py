@@ -73,7 +73,8 @@ class TabuSearch:
             while True:
 
                 if self.tabu_list.is_move_tabu(neighbourhood_best):
-                    if self._score(neighbourhood_best.new_sol) >= self._score(self.best):
+                    # print 'TABU!'
+                    if self._score(neighbourhood_best.new_sol) > self._score(self.best):
                         print 'ASPIRATION!'
                         self.tabu_list.append_tabu_list(neighbourhood_best.path)
                         self.best = deepcopy(neighbourhood_best.new_sol)
@@ -86,16 +87,15 @@ class TabuSearch:
                         break
 
                     else:
-                        print len(neighbourhood)
                         neighbourhood.remove(neighbourhood_best)
                         neighbourhood_best = self._best_score(neighbourhood)
 
                 else:
                     self.tabu_list.append_tabu_list(neighbourhood_best.path)
                     self.curr_sol = deepcopy(neighbourhood_best.new_sol)
-                    print self.curr_sol.fitness
+                    # print self.curr_sol.fitness
                     # print self.tabu_list.element_list
-                    if self.best == '' or self._score(self.curr_sol) >= self._score(self.best):
+                    if self.best == '' or self._score(self.curr_sol) > self._score(self.best):
                         self.best = deepcopy(self.curr_sol)
 
                         if self.max_wait !='*':
@@ -115,7 +115,7 @@ class TabuSearch:
             # print self.curr_sol.fitness
 
             # call abstract post_swap_change method in case necessary for algo (like eq5 for memetic algo paper)
-            # _post_swap_change(neighbourhood_best)
+            self._post_swap_change(neighbourhood_best)
             if self.max_score != '*' and self._score(self.best) >= self.max_score:
                 print 'REACHED MAX SCORE AFTER ' + str(i) + ' ITERATIONS'
                 return self.best, self._score(self.best)
