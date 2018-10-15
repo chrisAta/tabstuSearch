@@ -5,3 +5,6 @@ class Move:
         self.old_sol = old_sol
         self.new_sol = new_sol
         self.path = path
+
+    def __str__(self):
+         return str(self.path.change)
