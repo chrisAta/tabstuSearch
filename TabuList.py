@@ -1,5 +1,5 @@
-from Path import Path
-from TabuTenure import TabuTenure
+from .Path import Path
+from .TabuTenure import TabuTenure
 from collections import deque
 
 

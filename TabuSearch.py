@@ -1,4 +1,4 @@
-from TabuList import TabuList
+from .TabuList import TabuList
 from abc import abstractmethod
 from numpy import argmax
 from copy import deepcopy
