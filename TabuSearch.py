@@ -102,7 +102,7 @@ class TabuSearch:
                             self.wait = 0
 
                         print('NEW BEST')
-                        print self.best.fitness
+                        print(self.best.fitness)
 
                     elif self.max_wait !='*':
                         self.wait += 1
