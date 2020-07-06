@@ -75,7 +75,7 @@ class TabuSearch:
                 if self.tabu_list.is_move_tabu(neighbourhood_best):
                     # print 'TABU!'
                     if self._score(neighbourhood_best.new_sol) > self._score(self.best):
-                        print 'ASPIRATION!'
+                        print('ASPIRATION!')
                         self.tabu_list.append_tabu_list(neighbourhood_best.path)
                         self.best = deepcopy(neighbourhood_best.new_sol)
                         self.curr_sol = deepcopy(neighbourhood_best.new_sol)  # ??
@@ -101,7 +101,7 @@ class TabuSearch:
                         if self.max_wait !='*':
                             self.wait = 0
 
-                        print 'NEW BEST'
+                        print('NEW BEST')
                         print self.best.fitness
 
                     elif self.max_wait !='*':
