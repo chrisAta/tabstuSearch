@@ -83,7 +83,7 @@ class TabuSearch:
                         if self.max_wait !='*':
                             self.wait = 0
 
-                        print self.best.fitness
+                        print(self.best.fitness)
                         break
 
                     else:
@@ -117,7 +117,7 @@ class TabuSearch:
             # call abstract post_swap_change method in case necessary for algo (like eq5 for memetic algo paper)
             self._post_swap_change(neighbourhood_best)
             if self.max_score != '*' and self._score(self.best) >= self.max_score:
-                print 'REACHED MAX SCORE AFTER ' + str(i) + ' ITERATIONS'
+                print('REACHED MAX SCORE AFTER ' + str(i) + ' ITERATIONS')
                 return self.best, self._score(self.best)
 
 
@@ -128,5 +128,5 @@ class TabuSearch:
             # print self._score(self.curr_sol)
             # print self._score(self.best)
 
-        print 'REACHED MAX STEPS'
+        print('REACHED MAX STEPS')
         return self.best, self._score(self.best)
