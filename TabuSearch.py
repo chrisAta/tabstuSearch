@@ -1,4 +1,4 @@
-from TabuList import TabuList
+from .TabuList import TabuList
 from abc import abstractmethod
 from numpy import argmax
 from copy import deepcopy
@@ -75,7 +75,7 @@ class TabuSearch:
                 if self.tabu_list.is_move_tabu(neighbourhood_best):
                     # print 'TABU!'
                     if self._score(neighbourhood_best.new_sol) > self._score(self.best):
-                        print 'ASPIRATION!'
+                        print('ASPIRATION!')
                         self.tabu_list.append_tabu_list(neighbourhood_best.path)
                         self.best = deepcopy(neighbourhood_best.new_sol)
                         self.curr_sol = deepcopy(neighbourhood_best.new_sol)  # ??
@@ -83,7 +83,7 @@ class TabuSearch:
                         if self.max_wait !='*':
                             self.wait = 0
 
-                        print self.best.fitness
+                        print(self.best.fitness)
                         break
 
                     else:
@@ -101,8 +101,8 @@ class TabuSearch:
                         if self.max_wait !='*':
                             self.wait = 0
 
-                        print 'NEW BEST'
-                        print self.best.fitness
+                        print('NEW BEST')
+                        print(self.best.fitness)
 
                     elif self.max_wait !='*':
                         self.wait += 1
@@ -117,16 +117,16 @@ class TabuSearch:
             # call abstract post_swap_change method in case necessary for algo (like eq5 for memetic algo paper)
             self._post_swap_change(neighbourhood_best)
             if self.max_score != '*' and self._score(self.best) >= self.max_score:
-                print 'REACHED MAX SCORE AFTER ' + str(i) + ' ITERATIONS'
+                print('REACHED MAX SCORE AFTER ' + str(i) + ' ITERATIONS')
                 return self.best, self._score(self.best)
 
 
             if self.max_wait !='*' and self.wait == self.max_wait:
-                print str(self.max_wait) + ' ITERATATIONS WITHOUT IMPROVEMENT, STOPPING'
+                print(str(self.max_wait) + ' ITERATIONS WITHOUT IMPROVEMENT, STOPPING')
                 return self.best, self._score(self.best)
 
             # print self._score(self.curr_sol)
             # print self._score(self.best)
 
-        print 'REACHED MAX STEPS'
+        print('REACHED MAX STEPS')
         return self.best, self._score(self.best)
