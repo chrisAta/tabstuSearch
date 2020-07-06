@@ -122,7 +122,7 @@ class TabuSearch:
 
 
             if self.max_wait !='*' and self.wait == self.max_wait:
-                print str(self.max_wait) + ' ITERATATIONS WITHOUT IMPROVEMENT, STOPPING'
+                print(str(self.max_wait) + ' ITERATIONS WITHOUT IMPROVEMENT, STOPPING')
                 return self.best, self._score(self.best)
 
             # print self._score(self.curr_sol)
