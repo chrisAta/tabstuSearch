@@ -55,12 +55,15 @@ class TabuSearch:
 
 
     def evaluate_curr_sol(self):
-        self.curr_sol.fitness = self._score(self.curr_sol)
+        self.curr_sol.fitness = self._score(self.curr_sol, True)
 
     def _best_score(self, neighbourhood):
-        return neighbourhood[argmax([self._score(x.new_sol) for x in neighbourhood])]
+        return neighbourhood[argmax([self._score(x.new_sol, True) for x in neighbourhood])]
 
     def run(self):
+
+        best_progress = []
+
         for i in range(0, self.max_steps):
 
             # print i
@@ -74,7 +77,7 @@ class TabuSearch:
 
                 if self.tabu_list.is_move_tabu(neighbourhood_best):
                     # print 'TABU!'
-                    if self._score(neighbourhood_best.new_sol) > self._score(self.best):
+                    if self._score(neighbourhood_best.new_sol, True) > self._score(self.best, True):
                         print('ASPIRATION!')
                         self.tabu_list.append_tabu_list(neighbourhood_best.path)
                         self.best = deepcopy(neighbourhood_best.new_sol)
@@ -95,7 +98,7 @@ class TabuSearch:
                     self.curr_sol = deepcopy(neighbourhood_best.new_sol)
                     # print self.curr_sol.fitness
                     # print self.tabu_list.element_list
-                    if self.best == '' or self._score(self.curr_sol) > self._score(self.best):
+                    if self.best == '' or self._score(self.curr_sol, True) > self._score(self.best, True):
                         self.best = deepcopy(self.curr_sol)
 
                         if self.max_wait !='*':
@@ -103,10 +106,10 @@ class TabuSearch:
 
                         print('NEW BEST')
                         print(self.best.fitness)
+                        best_progress += [self.best.fitness]
 
                     elif self.max_wait !='*':
                         self.wait += 1
-
 
                     break
 
@@ -116,17 +119,16 @@ class TabuSearch:
 
             # call abstract post_swap_change method in case necessary for algo (like eq5 for memetic algo paper)
             self._post_swap_change(neighbourhood_best)
-            if self.max_score != '*' and self._score(self.best) >= self.max_score:
+            if self.max_score != '*' and self._score(self.best, True) >= self.max_score:
                 print('REACHED MAX SCORE AFTER ' + str(i) + ' ITERATIONS')
-                return self.best, self._score(self.best)
+                return self.best, self._score(self.best, True), best_progress
 
 
             if self.max_wait !='*' and self.wait == self.max_wait:
                 print(str(self.max_wait) + ' ITERATIONS WITHOUT IMPROVEMENT, STOPPING')
-                return self.best, self._score(self.best)
-
+                return self.best, self._score(self.best, True), best_progress
             # print self._score(self.curr_sol)
             # print self._score(self.best)
 
         print('REACHED MAX STEPS')
-        return self.best, self._score(self.best)
+        return self.best, self._score(self.best, True), best_progress

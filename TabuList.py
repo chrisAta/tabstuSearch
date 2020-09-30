@@ -28,7 +28,7 @@ class TabuList:
             # temp = [x for sub in self.element_list for x in sub]
             # print temp
             # print move.path.change
-            # print self.element_list
+            # print (self.element_list)
             return True in [x in self.element_list for x in move.path.change]
 
         if self.list_type in ('tuple'):
